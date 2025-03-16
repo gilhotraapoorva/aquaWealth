@@ -123,7 +123,7 @@ public class InsuranceClaimService {
     }
 
     public String processClaim(String governmentId, String city, LocalDate date, BigDecimal claimAmount) {
-        // ✅ Check if the user has an active policy
+        //  Check if the user has an active policy
         Optional<InsurancePolicy> policyOpt = policyRepository.findByGovernmentId(governmentId.trim());
         if (policyOpt.isEmpty()) {
             return "Claim Rejected: No active insurance policy found.";
@@ -131,33 +131,33 @@ public class InsuranceClaimService {
 
         InsurancePolicy policy = policyOpt.get();
 
-        // ✅ Ensure the governmentId matches the policy record
+        // Ensure the governmentId matches the policy record
         if (!policy.getGovernmentId().equalsIgnoreCase(governmentId.trim())) {
             return "Claim Rejected: Provided government ID does not match the policy records.";
         }
 
-        // ✅ Validate claim is within policy coverage period
+        //  Validate claim is within policy coverage period
         if (date.isBefore(policy.getStartDate()) || date.isAfter(policy.getEndDate())) {
             return "Claim Rejected: Claim date is outside the valid policy period.";
         }
 
-        // ✅ Check extreme weather conditions
+        //  Check extreme weather conditions
         String weatherCondition = weatherAPIUtil.getWeather(city, date.toString());
         if (!(weatherCondition.contains("Flood") || weatherCondition.contains("Heavy Rain") || weatherCondition.contains("Thunderstorm"))) {
             return "Claim Rejected: No severe weather conditions found.";
         }
 
-        // ✅ Validate claim amount does not exceed coverage
+        //  Validate claim amount does not exceed coverage
         if (claimAmount.compareTo(BigDecimal.valueOf(policy.getCoverageAmount())) > 0) {
             return "Claim Rejected: Claim amount exceeds coverage amount.";
         }
 
-        // ✅ Deduct claim amount from coverage
+        // Deduct claim amount from coverage
         BigDecimal updatedCoverage = BigDecimal.valueOf(policy.getCoverageAmount()).subtract(claimAmount);
         policy.setCoverageAmount(updatedCoverage.doubleValue());
         policyRepository.save(policy);
 
-        // ✅ Save claim only if approved
+        // Save claim only if approved
         InsuranceClaim claim = new InsuranceClaim();
         claim.setPolicy(policy);
         claim.setClaimAmount(claimAmount);

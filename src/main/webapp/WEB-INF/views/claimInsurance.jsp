@@ -5,12 +5,12 @@
     <title>Claim Insurance</title>
     <script>
         function submitClaim(event) {
-            event.preventDefault(); // ✅ Prevents default form submission
+            event.preventDefault(); // Prevents default form submission
 
             let governmentId = document.getElementById("governmentId").value.trim();
             let city = document.getElementById("city").value.trim();
             let date = document.getElementById("date").value;
-            let claimAmount = parseFloat(document.getElementById("claimAmount").value); // ✅ Ensure it's a number
+            let claimAmount = parseFloat(document.getElementById("claimAmount").value);
 
             if (!governmentId || !city || !date || isNaN(claimAmount)) {
                 alert("Please enter all required fields.");
@@ -29,12 +29,12 @@
              headers: { "Content-Type": "application/json" },
              body: claimData
          })
-         .then(response => response.json()) // ✅ Parse JSON response properly
+         .then(response => response.json()) //  Parse JSON response properly
          .then(data => {
              if (data.message) {
-                 alert(data.message); // ✅ Handle success
+                 alert(data.message); //  Handle success
              } else if (data.error) {
-                 alert("Error: " + data.error); // ✅ Handle error
+                 alert("Error: " + data.error); //  Handle error
              }
          })
          .catch(error => {
@@ -48,7 +48,6 @@
 <body>
     <h2>Claim Insurance</h2>
 
-    <!-- ✅ Ensure form uses "onsubmit" event -->
     <form onsubmit="submitClaim(event)">
         <label for="governmentId">Government ID:</label>
         <input type="text" id="governmentId" name="governmentId" required><br><br>

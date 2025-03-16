@@ -25,7 +25,7 @@
             let formData = {
                 user: {
                     name: document.getElementById("userName").value,
-                    email: document.getElementById("userEmail").value // ✅ No userId required!
+                    email: document.getElementById("userEmail").value // No userId required!
                 },
                 governmentId: document.getElementById("governmentId").value,
                 coverageType: document.getElementById("coverageType").value,
