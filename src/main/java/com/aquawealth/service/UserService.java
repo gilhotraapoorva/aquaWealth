@@ -41,7 +41,7 @@ public class UserService {
         }
 
         String cleanGovernmentId = governmentId.trim().toLowerCase();
-//        log.info("Fetching user with government_id: {}", cleanGovernmentId);
+        log.info("Fetching user with government_id: {}", cleanGovernmentId);
 
         return userRepository.findByGovernmentId(cleanGovernmentId).orElse(null);
     }

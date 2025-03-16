@@ -18,7 +18,7 @@ import java.util.Optional;
 @Transactional
 public class InsurancePolicyService {
 
-//    private static final Logger logger = LoggerFactory.getLogger(InsurancePolicyService.class);
+    private static final Logger logger = LoggerFactory.getLogger(InsurancePolicyService.class);
 
     private final InsurancePolicyRepository policyRepository;
     private final UserRepository userRepository;
@@ -30,14 +30,14 @@ public class InsurancePolicyService {
     }
 
     public InsurancePolicy savePolicy(InsurancePolicy policy) {
-//        logger.info(" Received request to save insurance policy: {}", policy);
+        logger.info("Received request to save insurance policy: {}", policy);
 
         // Ensure `governmentId` is provided
         if (policy.getGovernmentId() == null || policy.getGovernmentId().isEmpty()) {
             throw new IllegalArgumentException("governmentId cannot be null");
         }
 
-        //  Check if a policy already exists for this governmentId
+        // Check if a policy already exists for this governmentId
         Optional<InsurancePolicy> existingPolicy = policyRepository.findByGovernmentId(policy.getGovernmentId());
         if (existingPolicy.isPresent()) {
             throw new IllegalArgumentException("Insurance already exists for this Government ID.");
@@ -54,31 +54,31 @@ public class InsurancePolicyService {
             User newUser = new User();
             newUser.setEmail(policy.getUser().getEmail());
             newUser.setName(policy.getUser().getName());
-            newUser.setGovernmentId(policy.getGovernmentId()); //  Assign the policy's governmentId to the user
+            newUser.setGovernmentId(policy.getGovernmentId()); // Assign the policy's governmentId to the user
             return userRepository.save(newUser);
         });
 
         policy.setUser(user);
 
-        // Ensure `governmentId` is NOT LOST when setting user
+        //  Ensure `governmentId` is NOT LOST when setting user
         if (policy.getGovernmentId() == null) {
             policy.setGovernmentId(user.getGovernmentId());
         }
 
-        // Ensure coverage amount is valid
+        //  Ensure coverage amount is valid
         if (policy.getCoverageAmount() == null || policy.getCoverageAmount() <= 0) {
             throw new IllegalArgumentException("Coverage amount must be provided and greater than 0.");
         }
 
-        // Auto-calculate premium amount
+        //  Auto-calculate premium amount
         policy.setPremiumAmount(policy.getCoverageAmount() / 30);
 
-        //  Set start date if not provided
+        // Set start date if not provided
         if (policy.getStartDate() == null) {
             policy.setStartDate(LocalDate.now());
         }
 
-        //  Set end date as 1 year from start date
+        // Set end date as 1 year from start date
         policy.setEndDate(policy.getStartDate().plusYears(1));
 
         if (policy.getCoverageType() == null || policy.getCoverageType().isEmpty()) {
@@ -88,11 +88,11 @@ public class InsurancePolicyService {
         // Set policy status as ACTIVE
         policy.setStatus("ACTIVE");
 
-//        logger.info("Saving policy to database: {}", policy);
+        logger.info(" Saving policy to database: {}", policy);
 
         InsurancePolicy savedPolicy = policyRepository.save(policy);
 
-//        logger.info("Policy saved successfully with ID: {}", savedPolicy.getPolicyId());
+        logger.info(" Policy saved successfully with ID: {}", savedPolicy.getPolicyId());
 
         return savedPolicy;
     }
