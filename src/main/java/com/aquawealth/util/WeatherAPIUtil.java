@@ -78,7 +78,6 @@ public class WeatherAPIUtil {
     private WeatherRecordRepository weatherRecordRepository;  //  Inject Repository
     public String getWeather(String city, String date) {
         RestTemplate restTemplate = new RestTemplate();
-//        String url = HISTORICAL_WEATHER_URL + API_KEY + "&q=" + city;
         String url = HISTORICAL_WEATHER_URL + API_KEY + "&q=" + city + "&dt=" + date;
 
         try {
@@ -90,12 +89,10 @@ public class WeatherAPIUtil {
 
             JSONObject json = new JSONObject(response);
 
-            // 🔹 Check if the API response contains an error message
             if (json.has("error")) {
                 return " API Error: " + json.getJSONObject("error").getString("message");
             }
 
-            //  Check if forecast data exists
             if (!json.has("forecast")) {
                 return " Error: No forecast data found!";
             }

@@ -39,7 +39,7 @@ public class WeatherController {
         weatherService.updateWeatherForCity(city);
         return "Weather data updated successfully for: " + city;
     }
-    // ✅ Fetch and Store Weather Data
+    // Fetch and Store Weather Data
     @PostMapping("/{city}")
     public String fetchAndStoreWeather(@PathVariable String city) {
         weatherAPIUtil.fetchAndStoreWeather(city);

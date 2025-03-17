@@ -18,19 +18,17 @@ public class InsurancePolicyController {
 
     @PostMapping("/apply")
     public ResponseEntity<?> applyForInsurance(@RequestBody InsurancePolicy policy) {
-        System.out.println("📩 Received Insurance Policy Request: " + policy);
+
 
         if (policy.getGovernmentId() == null || policy.getGovernmentId().isEmpty()) {
-            System.out.println("❌ ERROR: governmentId is missing!");
+
             return ResponseEntity.badRequest().body("Government ID is required");
         }
 
         try {
             InsurancePolicy savedPolicy = policyService.savePolicy(policy);
-            System.out.println("✅ Policy Saved Successfully: " + savedPolicy);
             return ResponseEntity.ok(savedPolicy);
         } catch (Exception e) {
-            System.out.println("🔥 ERROR SAVING POLICY: " + e.getMessage());
             e.printStackTrace(); // Log full error
             return ResponseEntity.status(500).body("Failed to save policy: " + e.getMessage());
         }

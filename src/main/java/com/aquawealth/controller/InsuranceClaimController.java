@@ -84,11 +84,7 @@ public class InsuranceClaimController {
     public ResponseEntity<Map<String, String>> processClaim(@RequestBody ClaimRequest claimRequest) {
         Map<String, String> response = new HashMap<>();
         try {
-            log.info("🔹 Received Claim Request: {}", claimRequest);
-            log.info("➡ Government ID: {}", claimRequest.getGovernmentId());
-            log.info("➡ City: {}", claimRequest.getCity());
-            log.info("➡ Date: {}", claimRequest.getDate());
-            log.info("➡ Claim Amount: {}", claimRequest.getClaimAmount());
+
 
             // Process the claim
             String result = claimService.processClaim(
@@ -98,18 +94,18 @@ public class InsuranceClaimController {
                     claimRequest.getClaimAmount()
             );
 
-            // ✅ If claim is rejected, return HTTP 400 (Bad Request)
+            // If claim is rejected, return HTTP 400 (Bad Request)
             if (result.startsWith("Claim Rejected")) {
                 response.put("error", result);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
-            // ✅ If claim is approved, return HTTP 200 (OK)
+            // If claim is approved, return HTTP 200 (OK)
             response.put("message", result);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            log.error("❌ Error Processing Claim: {}", e.getMessage());
+            log.error("Error Processing Claim: {}", e.getMessage());
             response.put("error", "Error Processing Claim: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
