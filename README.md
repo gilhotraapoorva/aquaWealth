@@ -10,7 +10,7 @@ Coverage Type: Specifies the type of insurance
 
 Coverage Amount: Total amount covered by the policy (must be greater than zero)
 
-Premium Amount: Automatically calculated as Coverage Amount ÷ 30
+Premium Amount: Automatically calculated as Coverage Amount / 30
 
 Start Date: Defaults to the current date when not provided
 
