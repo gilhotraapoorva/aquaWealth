@@ -17,12 +17,13 @@ import java.util.List;
 public class WeatherAPIUtil {
 
     private static final String API_KEY = "5abf2fcd673d4c8f8f085825251103";
-    private static final String CURRENT_WEATHER_URL  = "http://api.weatherapi.com/v1/current.json?key=";
+    private static final String CURRENT_WEATHER_URL = "http://api.weatherapi.com/v1/current.json?key=";
     private static final String HISTORICAL_WEATHER_URL = "http://api.weatherapi.com/v1/history.json?key=";
     private final String[] cities = {
             "New York", "London", "Buenos Aires", "Tokyo", "Mumbai", "Sydney",
             "Dubai", "Moscow", "Cape Town", "Toronto", "Los Angeles"
     };
+
     public String checkWeatherRisk(String city, String date) {
         RestTemplate restTemplate = new RestTemplate();
         String url = HISTORICAL_WEATHER_URL + API_KEY + "&q=" + city + "&dt=" + date;
@@ -39,7 +40,7 @@ public class WeatherAPIUtil {
 
             System.out.println("Total Precipitation: " + precipitation + " mm");
 
-            if (precipitation > 1.5) {
+            if (precipitation > 12) {
                 return "Flood Risk Detected!";
             } else if (precipitation < 0.5) {
                 return " Drought Risk Detected!";
@@ -51,6 +52,7 @@ public class WeatherAPIUtil {
             return " Error fetching weather data: " + e.getMessage();
         }
     }
+
     public List<String> getExtremeWeatherCities() {
         RestTemplate restTemplate = new RestTemplate();
         List<String> extremeWeatherCities = new ArrayList<>();
@@ -74,8 +76,10 @@ public class WeatherAPIUtil {
         }
         return extremeWeatherCities;
     }
+
     @Autowired
     private WeatherRecordRepository weatherRecordRepository;  //  Inject Repository
+
     public String getWeather(String city, String date) {
         RestTemplate restTemplate = new RestTemplate();
         String url = HISTORICAL_WEATHER_URL + API_KEY + "&q=" + city + "&dt=" + date;
@@ -103,7 +107,7 @@ public class WeatherAPIUtil {
 
             System.out.println("Extracted Precipitation: " + precipitation + " mm");
 
-            if (precipitation > 1.5) {
+            if (precipitation > 12) {
                 return "️ Flood Risk Detected!";
             } else if (precipitation < 0.5) {
                 return "Drought Risk Detected!";
@@ -154,6 +158,6 @@ public class WeatherAPIUtil {
             }
         }
     }
-
-
 }
+
+

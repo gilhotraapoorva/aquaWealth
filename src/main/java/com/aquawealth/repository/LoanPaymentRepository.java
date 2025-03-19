@@ -1,10 +1,9 @@
 package com.aquawealth.repository;
-
-import com.aquawealth.model.InsuranceClaim;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.aquawealth.model.LoanPayment;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InsuranceClaimRepository extends JpaRepository<InsuranceClaim, Long> {
-
+public interface LoanPaymentRepository extends JpaRepository<LoanPayment, Long> {
 }

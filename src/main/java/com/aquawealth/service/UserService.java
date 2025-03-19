@@ -45,4 +45,7 @@ public class UserService {
 
         return userRepository.findByGovernmentId(cleanGovernmentId).orElse(null);
     }
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
 }

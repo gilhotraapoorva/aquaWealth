@@ -11,3 +11,4 @@ import java.util.Optional;
 public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy, Long> {
     Optional<InsurancePolicy> findByGovernmentId(String governmentId);
 }
+
