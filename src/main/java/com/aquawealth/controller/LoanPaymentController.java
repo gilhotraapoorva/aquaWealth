@@ -3,33 +3,36 @@ package com.aquawealth.controller;
 import com.aquawealth.model.LoanPayment;
 import com.aquawealth.service.LoanPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
-@Controller
-@RequestMapping("/payements")
+@CrossOrigin(origins = "http://localhost:8000") // Allow frontend requests
+@RestController
+@RequestMapping("/payments")
 public class LoanPaymentController {
 
     @Autowired
     private LoanPaymentService loanPaymentService;
 
-    @GetMapping("/make")
-    public String showPaymentForm() {
-        return "make-payment";
-    }
-
     @PostMapping("/process-payment")
-    public String processPayment(
+    public Map<String, Object> processPayment(
             @RequestParam Long loanId,
             @RequestParam BigDecimal amount,
-            @RequestParam String paymentType,
-            Model model
+            @RequestParam String paymentType
     ) {
-        LoanPayment payment = loanPaymentService.makePayment(loanId, amount, paymentType);
-        model.addAttribute("payment", payment);
-        return "payment-success";
+        Map<String, Object> response = new HashMap<>();
+        try {
+            LoanPayment payment = loanPaymentService.makePayment(loanId, amount, paymentType);
+            response.put("success", true);
+            response.put("message", "Payment processed successfully!");
+            response.put("payment", payment);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Payment failed: " + e.getMessage());
+        }
+        return response;
     }
 }

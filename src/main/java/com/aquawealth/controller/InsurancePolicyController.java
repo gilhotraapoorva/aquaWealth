@@ -6,11 +6,11 @@ import com.aquawealth.service.InsurancePolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/insurance")
+@CrossOrigin(origins = "http://localhost:8000")
 public class InsurancePolicyController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class InsurancePolicyController {
     @PostMapping("/apply")
     public ResponseEntity<?> applyForInsurance(@RequestBody InsurancePolicy policy) {
 
-
+        System.out.println("Received Insurance Application: " + policy);
         if (policy.getGovernmentId() == null || policy.getGovernmentId().isEmpty()) {
 
             return ResponseEntity.badRequest().body("Government ID is required");
